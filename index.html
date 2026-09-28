@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="icon.svg" type="image/svg+xml"><meta name="theme-color" content="#4f3fe8">
+<title>DevKit 🧰 Developer Toolkit</title>
+<style>
+:root{--bg:#f2f4fa;--card:#fff;--ink:#16203a;--mut:#5b6785;--line:#d9deea;--acc:#4f3fe8;--onacc:#fff;--ok:#0a8f6a;--err:#c62828;--code:#eceff8;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0d1324;--card:#151d33;--ink:#e8ecf8;--mut:#94a1c4;--line:#27314e;--acc:#9a8dff;--onacc:#10123a;--ok:#3ddc97;--err:#ff7b7b;--code:#0a0f1e}}
+:root[data-theme="dark"]{--bg:#0d1324;--card:#151d33;--ink:#e8ecf8;--mut:#94a1c4;--line:#27314e;--acc:#9a8dff;--onacc:#10123a;--ok:#3ddc97;--err:#ff7b7b;--code:#0a0f1e}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:860px;margin:0 auto;padding:16px}
+h1{font-size:30px;font-weight:800;margin:8px 0 0;letter-spacing:-.5px}
+.sub{color:var(--mut);margin:0 0 14px}
+nav{display:flex;gap:6px;overflow-x:auto;padding:4px 0 10px;position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);z-index:5;scrollbar-width:thin}
+nav button{flex:none;border:1px solid var(--line);background:var(--card);color:var(--ink);padding:7px 13px;border-radius:999px;font:600 14px system-ui,sans-serif;cursor:pointer}
+nav button[aria-selected=true]{background:var(--acc);color:var(--onacc);border-color:var(--acc)}
+button:focus-visible,textarea:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+section{display:none;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px}
+section.on{display:block}
+h2{font-size:20px;margin:0 0 4px}
+.d{color:var(--mut);margin:0 0 12px;font-size:14px}
+textarea,input[type=text],input[type=number],input[type=datetime-local],select{width:100%;background:var(--code);color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:10px;font:400 14px/1.5 'JetBrains Mono',ui-monospace,monospace;direction:ltr;text-align:left}
+textarea{min-height:130px;resize:vertical}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0;align-items:center}
+.b{border:0;background:var(--acc);color:var(--onacc);padding:8px 14px;border-radius:9px;font:600 14px system-ui,sans-serif;cursor:pointer}
+.b.g{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.msg{min-height:22px;font-size:14px;font-weight:600}
+.msg.e{color:var(--err)}.msg.k{color:var(--ok)}
+.out{background:var(--code);border:1px solid var(--line);border-radius:10px;padding:10px;font:400 14px/1.6 'JetBrains Mono',ui-monospace,monospace;direction:ltr;text-align:left;white-space:pre-wrap;word-break:break-all;overflow-x:auto}
+.item{flex-wrap:wrap;display:flex;justify-content:space-between;gap:10px;align-items:center;padding:8px 10px;border-bottom:1px solid var(--line);cursor:pointer;direction:ltr;font:400 14px 'JetBrains Mono',monospace;word-break:break-all}
+.item b{color:var(--mut);font:600 13px system-ui,sans-serif;flex:none;direction:ltr}
+.item:hover{background:var(--code)}
+mark{background:var(--acc);color:var(--onacc);border-radius:3px;padding:0 2px}
+.ad,.rm{display:block}.ad{background:rgba(10,143,106,.2)}.rm{background:rgba(198,40,40,.2)}
+label{font-size:14px;color:var(--mut)}
+#toast{position:fixed;bottom:calc(20px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:8px 16px;border-radius:999px;font-weight:600;opacity:0;pointer-events:none;transition:opacity .2s}
+#toast.s{opacity:1}
+.sw{width:100%;height:56px;border-radius:10px;border:1px solid var(--line);margin:8px 0}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:560px){.two{grid-template-columns:1fr}}
+button,.b,nav button{min-height:40px}input[type=checkbox]{width:20px;height:20px;vertical-align:middle}
+@media(max-width:560px){input,textarea,select{font-size:16px}.wrap{padding:12px}h1{font-size:26px}.row .b{flex:1 1 auto}}
+@media(min-width:720px){nav{flex-wrap:wrap;overflow:visible;position:static}.wrap{padding:24px}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>DevKit 🧰</h1>
+<p class="sub">Fifteen tools every developer uses daily. Everything runs on your device and your data never leaves it 🔒</p>
+<nav id="tabs" role="tablist"></nav>
+
+<section id="json"><h2>📋 JSON</h2><p class="d">Format, minify, sort keys and validate JSON.</p>
+<textarea id="ji" placeholder='{"name":"Ameen","skills":["Lua","C++"]}'></textarea>
+<div class="row"><button class="b" id="jf">Format ✨</button><button class="b g" id="jm">Minify</button><button class="b g" id="js">Sort keys</button><select id="jn" style="width:auto"><option value="2">2 spaces</option><option value="4">4 spaces</option><option value="1">tab</option></select></div>
+<div class="msg" id="jmsg"></div><div class="out" id="jo"></div><div class="row"><button class="b g" data-c="jo">Copy result</button></div></section>
+
+<section id="enc"><h2>🔐 Base64 &amp; URL</h2><p class="d">Full UTF-8 support, including emoji and non-Latin text.</p>
+<textarea id="ei" placeholder="Type or paste text…"></textarea>
+<div class="row"><button class="b" data-e="b64e">Base64 encode</button><button class="b g" data-e="b64d">Base64 decode</button><button class="b" data-e="ue">URL encode</button><button class="b g" data-e="ud">URL decode</button></div>
+<div class="msg" id="emsg"></div><div class="out" id="eo"></div><div class="row"><button class="b g" data-c="eo">Copy result</button></div></section>
+
+<section id="jwt"><h2>🎫 JWT Decoder</h2><p class="d">Shows the header and payload and tells you if the token has expired. Does not verify the signature.</p>
+<textarea id="wi" placeholder="eyJhbGciOi..."></textarea><div class="msg" id="wmsg"></div><div class="out" id="wo"></div></section>
+
+<section id="rx"><h2>🎯 Regex Tester</h2><p class="d">Test a pattern against your text and see matches instantly.</p>
+<div class="two"><input type="text" id="rp" placeholder="(\w+)@(\w+)\.com"><input type="text" id="rf" value="g" aria-label="flags"></div>
+<textarea id="rt" placeholder="Text to test…"></textarea><div class="msg" id="rmsg"></div><div class="out" id="ro"></div><div id="rl"></div></section>
+
+<section id="ts"><h2>⏱️ Time &amp; Unix Timestamp</h2><p class="d">Automatically detects seconds vs milliseconds.</p>
+<div class="row"><input type="number" id="ti" placeholder="1767225600" style="flex:1"><button class="b g" id="tn">Now</button></div><div id="to"></div>
+<p class="d" style="margin-top:14px">Date to Unix:</p><input type="datetime-local" id="td"><div id="tdo"></div></section>
+
+<section id="hash"><h2>#️⃣ Hash</h2><p class="d">SHA-1, SHA-256, SHA-384 and SHA-512 as you type. Tap any result to copy it.</p>
+<textarea id="hi" placeholder="Type some text…"></textarea><div id="ho"></div></section>
+
+<section id="gen"><h2>🎲 Generators</h2><p class="d">UUIDs and secure random passwords (Web Crypto).</p>
+<div class="row"><button class="b" id="gu">New UUIDs</button></div><div id="gun"></div>
+<p class="d" style="margin-top:14px">Password:</p>
+<div class="row"><label>Length <input type="number" id="pl" value="20" min="6" max="64" style="width:80px"></label><label><input type="checkbox" id="ps" checked> Symbols</label><label><input type="checkbox" id="pn" checked> Numbers</label><button class="b" id="gp">Generate</button></div><div id="gpo"></div></section>
+
+<section id="col"><h2>🎨 Colors</h2><p class="d">Convert between HEX, RGB and HSL.</p>
+<div class="row"><input type="color" id="cp" value="#4f3fe8" style="width:56px;height:44px"><input type="text" id="ci" value="#4f3fe8" style="flex:1"></div>
+<div class="sw" id="csw"></div><div class="msg" id="cmsg"></div><div id="co"></div></section>
+
+<section id="case"><h2>🔤 Variable Name Converter</h2><p class="d">Type a name in any style and get every other style.</p>
+<input type="text" id="ki" placeholder="user profile image url"><div id="ko"></div></section>
+
+<section id="snip"><h2>💾 My Snippets</h2><p class="d">Save code you reuse. Stored in this browser only.</p>
+<input type="text" id="sn" placeholder="Snippet name" style="margin-bottom:8px"><textarea id="sc" placeholder="Code…"></textarea>
+<div class="row"><button class="b" id="ss">Save 💾</button></div><div id="sl"></div></section>
+
+<section id="diff"><h2>↔️ Text Diff</h2><p class="d">Paste two versions and see added and removed lines.</p>
+<div class="two"><textarea id="da" placeholder="Old version"></textarea><textarea id="db" placeholder="New version"></textarea></div>
+<div class="msg" id="dmsg"></div><div class="out" id="do"></div></section>
+
+<section id="text"><h2>📝 Text &amp; Line Tools</h2><p class="d">Each button edits the text in place, so you can chain several operations.</p>
+<textarea id="xi" placeholder="Paste a list or lines of code…"></textarea><div class="msg" id="xs"></div>
+<div class="row"><button class="b g" data-x="sort">Sort A→Z</button><button class="b g" data-x="rev">Reverse lines</button><button class="b g" data-x="dedupe">Remove duplicates</button><button class="b g" data-x="trim">Trim &amp; drop empty</button><button class="b g" data-x="num">Number lines</button><button class="b g" data-x="up">UPPER</button><button class="b g" data-x="low">lower</button><button class="b" id="xc">Copy</button></div></section>
+
+<section id="http"><h2>🌐 HTTP Status Codes</h2><p class="d">Search by number, name or meaning.</p><input type="text" id="hq" placeholder="404, Forbidden, auth…" style="margin-bottom:8px"><div id="hto"></div></section>
+
+<section id="git"><h2>🌿 Git Commands</h2><p class="d">Tap any command to copy it. Search by keyword.</p><input type="text" id="gq" placeholder="undo, stash, rebase…" style="margin-bottom:8px"><div id="gto"></div></section>
+
+<section id="chmod"><h2>🔒 chmod Calculator</h2><p class="d">Pick permissions or type a number like 755.</p><input type="text" id="cmi" placeholder="755" maxlength="3" style="margin-bottom:8px"><div id="cmt"></div><div id="cmo"></div></section>
+</div>
+<div id="toast" role="status"></div>
+
+<script>
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const H=s=>String(s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+const T=[['json','📋 JSON'],['enc','🔐 Base64/URL'],['jwt','🎫 JWT'],['rx','🎯 Regex'],['ts','⏱️ Time'],['hash','#️⃣ Hash'],['gen','🎲 Tools'],['col','🎨 Colors'],['case','🔤 Names'],['diff','↔️ Diff'],['text','📝 Text'],['http','🌐 HTTP'],['git','🌿 Git'],['chmod','🔒 chmod'],['snip','💾 Snippets']];
+function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('s');clearTimeout(toast.i);toast.i=setTimeout(()=>t.classList.remove('s'),1400)}
+async function copy(s){try{await navigator.clipboard.writeText(s);toast('Copied ✅')}catch(e){toast('Copy failed, select the text manually')}}
+function show(id){$$('section').forEach(s=>s.classList.toggle('on',s.id===id));$$('#tabs button').forEach(b=>b.setAttribute('aria-selected',b.dataset.t===id));try{localStorage.setItem('dk-tab',id)}catch(e){}}
+T.forEach(([id,n])=>{const b=document.createElement('button');b.textContent=n;b.dataset.t=id;b.setAttribute('role','tab');b.onclick=()=>show(id);$('#tabs').append(b)});
+document.addEventListener('click',e=>{const c=e.target.closest('[data-c]');if(c)copy($('#'+c.dataset.c).textContent);const i=e.target.closest('.item');if(i)copy(i.dataset.v||i.lastChild.textContent)});
+function list(el,rows){el.innerHTML=rows.map(([k,v])=>`<div class="item" data-v="${H(v).replace(/"/g,'&quot;')}"><b>${k}</b><span>${H(v)}</span></div>`).join('')}
+function msg(el,t,ok){el.textContent=t;el.className='msg '+(ok?'k':'e')}
+
+/* JSON */
+const sortK=o=>Array.isArray(o)?o.map(sortK):o&&typeof o==='object'?Object.fromEntries(Object.keys(o).sort().map(k=>[k,sortK(o[k])])):o;
+function J(mode){try{let o=JSON.parse($('#ji').value);if(mode==='s')o=sortK(o);const n=$('#jn').value;$('#jo').textContent=JSON.stringify(o,null,mode==='m'?0:n==='1'?'\t':+n);msg($('#jmsg'),'Valid JSON ✅',1)}catch(e){$('#jo').textContent='';msg($('#jmsg'),'Error: '+e.message)}}
+$('#jf').onclick=()=>J('f');$('#jm').onclick=()=>J('m');$('#js').onclick=()=>J('s');
+
+/* Base64 / URL */
+const b64e=s=>{let r='';new TextEncoder().encode(s).forEach(x=>r+=String.fromCharCode(x));return btoa(r)};
+const b64d=s=>new TextDecoder().decode(Uint8Array.from(atob(s.trim().replace(/-/g,'+').replace(/_/g,'/')),c=>c.charCodeAt(0)));
+const F={b64e,b64d,ue:encodeURIComponent,ud:decodeURIComponent};
+$$('[data-e]').forEach(b=>b.onclick=()=>{try{$('#eo').textContent=F[b.dataset.e]($('#ei').value);msg($('#emsg'),'Done ✅',1)}catch(e){$('#eo').textContent='';msg($('#emsg'),'Input is not valid for this operation')}});
+
+/* JWT */
+$('#wi').oninput=()=>{const v=$('#wi').value.trim();if(!v){$('#wo').textContent='';msg($('#wmsg'),'');return}
+try{const p=v.split('.');if(p.length<2)throw 0;const h=JSON.parse(b64d(p[0])),d=JSON.parse(b64d(p[1]));let s='';
+if(d.exp){const x=new Date(d.exp*1000);s=x<new Date()?'⚠️ Expired on '+x.toLocaleString():'✅ Valid until '+x.toLocaleString()}
+msg($('#wmsg'),s||'Decoded',s.startsWith('⚠')?0:1);$('#wo').textContent='// HEADER\n'+JSON.stringify(h,null,2)+'\n\n// PAYLOAD\n'+JSON.stringify(d,null,2)}
+catch(e){$('#wo').textContent='';msg($('#wmsg'),'This is not a valid JWT')}};
+
+/* Regex */
+function R(){const p=$('#rp').value,t=$('#rt').value;let f=$('#rf').value;$('#rl').innerHTML='';if(!p){$('#ro').innerHTML=H(t);msg($('#rmsg'),'');return}
+if(!f.includes('g'))f+='g';try{const re=new RegExp(p,f),ms=[...t.matchAll(re)];let o='',i=0;
+ms.forEach(m=>{o+=H(t.slice(i,m.index))+'<mark>'+H(m[0])+'</mark>';i=m.index+m[0].length});$('#ro').innerHTML=o+H(t.slice(i));
+msg($('#rmsg'),ms.length+' matches',ms.length>0);
+$('#rl').innerHTML=ms.slice(0,50).map((m,k)=>`<div class="item" data-v="${H(m[0]).replace(/"/g,'&quot;')}"><b>#${k+1} @${m.index}${m.length>1?' | groups: '+m.slice(1).map(g=>g??'∅').join(', '):''}</b><span>${H(m[0])}</span></div>`).join('')}
+catch(e){msg($('#rmsg'),'Invalid pattern: '+e.message)}}
+['#rp','#rf','#rt'].forEach(s=>$(s).oninput=R);
+
+/* Timestamp */
+const ago=ms=>{const r=new Intl.RelativeTimeFormat('en',{numeric:'auto'}),d=(ms-Date.now())/1000,a=Math.abs(d);
+return a<60?r.format(Math.round(d),'second'):a<3600?r.format(Math.round(d/60),'minute'):a<86400?r.format(Math.round(d/3600),'hour'):r.format(Math.round(d/86400),'day')};
+function TS(){const v=$('#ti').value;if(v==='')return $('#to').innerHTML='';const n=+v,ms=Math.abs(n)<1e11?n*1000:n,d=new Date(ms);
+if(isNaN(d))return $('#to').innerHTML='<div class="msg e">Invalid value</div>';
+list($('#to'),[['ISO',d.toISOString()],['UTC',d.toUTCString()],['Local',d.toString()],['Seconds',String(Math.floor(ms/1000))],['Millis',String(ms)],['Relative',ago(ms)]])}
+$('#ti').oninput=TS;$('#tn').onclick=()=>{$('#ti').value=Math.floor(Date.now()/1000);TS()};
+$('#td').oninput=()=>{const d=new Date($('#td').value);if(isNaN(d))return $('#tdo').innerHTML='';list($('#tdo'),[['Seconds',String(Math.floor(d/1000))],['Millis',String(+d)]])};
+
+/* Hash */
+$('#hi').oninput=async()=>{const t=$('#hi').value;if(!t)return $('#ho').innerHTML='';const b=new TextEncoder().encode(t),r=[];
+for(const a of['SHA-1','SHA-256','SHA-384','SHA-512']){const h=await crypto.subtle.digest(a,b);r.push([a,[...new Uint8Array(h)].map(x=>x.toString(16).padStart(2,'0')).join('')])}list($('#ho'),r)};
+
+/* Generators */
+$('#gu').onclick=()=>{list($('#gun'),Array.from({length:5},()=>['UUID v4',crypto.randomUUID()]))};
+$('#gp').onclick=()=>{let c='abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ';if($('#pn').checked)c+='23456789';if($('#ps').checked)c+='!@#$%^&*-_=+?';
+const L=Math.min(64,Math.max(6,+$('#pl').value||20)),a=crypto.getRandomValues(new Uint32Array(L));list($('#gpo'),[['Password',[...a].map(x=>c[x%c.length]).join('')]])};
+
+/* Colors */
+const hsl=(r,g,b)=>{r/=255;g/=255;b/=255;const M=Math.max(r,g,b),m=Math.min(r,g,b),l=(M+m)/2,d=M-m;let h=0,s=0;
+if(d){s=d/(1-Math.abs(2*l-1));h=M===r?((g-b)/d)%6:M===g?(b-r)/d+2:(r-g)/d+4;h=Math.round(h*60);if(h<0)h+=360}return`hsl(${h}, ${Math.round(s*100)}%, ${Math.round(l*100)}%)`};
+function C(v){let h=v.trim().replace('#','');if(h.length===3)h=[...h].map(x=>x+x).join('');
+if(!/^[0-9a-f]{6}$/i.test(h))return msg($('#cmsg'),'Enter a HEX color like #4f3fe8');msg($('#cmsg'),'');
+const r=parseInt(h.slice(0,2),16),g=parseInt(h.slice(2,4),16),b=parseInt(h.slice(4,6),16);$('#csw').style.background='#'+h;
+list($('#co'),[['HEX','#'+h.toLowerCase()],['RGB',`rgb(${r}, ${g}, ${b})`],['HSL',hsl(r,g,b)]])}
+$('#ci').oninput=()=>{C($('#ci').value);const h=$('#ci').value.trim();if(/^#[0-9a-f]{6}$/i.test(h))$('#cp').value=h};
+$('#cp').oninput=()=>{$('#ci').value=$('#cp').value;C($('#cp').value)};C('#4f3fe8');
+
+/* Case */
+$('#ki').oninput=()=>{const w=$('#ki').value.replace(/([a-z0-9])([A-Z])/g,'$1 $2').split(/[^A-Za-z0-9]+/).filter(Boolean).map(x=>x.toLowerCase());
+if(!w.length)return $('#ko').innerHTML='';const cap=x=>x[0].toUpperCase()+x.slice(1);
+list($('#ko'),[['camelCase',w[0]+w.slice(1).map(cap).join('')],['PascalCase',w.map(cap).join('')],['snake_case',w.join('_')],['kebab-case',w.join('-')],['CONSTANT_CASE',w.join('_').toUpperCase()],['dot.case',w.join('.')],['Title Case',w.map(cap).join(' ')]])};
+
+/* Snippets */
+let S=[];try{S=JSON.parse(localStorage.getItem('dk-snip')||'[]')}catch(e){}
+function SL(){const el=$('#sl');el.innerHTML=S.length?'':'<p class="d">No snippets yet. Save your first one above.</p>';
+S.forEach((s,i)=>{const d=document.createElement('div');d.style.cssText='border-top:1px solid var(--line);padding:10px 0';
+d.innerHTML=`<div class="row" style="margin:0 0 6px"><b style="flex:1">${H(s.n)}</b><button class="b g">Copy</button><button class="b g">Delete</button></div><div class="out">${H(s.c)}</div>`;
+const [c,x]=d.querySelectorAll('button');c.onclick=()=>copy(s.c);x.onclick=()=>{S.splice(i,1);SV();SL()};el.append(d)})}
+function SV(){try{localStorage.setItem('dk-snip',JSON.stringify(S))}catch(e){}}
+$('#ss').onclick=()=>{const n=$('#sn').value.trim(),c=$('#sc').value;if(!n||!c)return toast('Enter a name and code');S.unshift({n,c});SV();SL();$('#sn').value=$('#sc').value='';toast('Saved 💾')};
+SL();
+
+/* Diff */
+function D(){const a=$('#da').value.split('\n'),b=$('#db').value.split('\n');if(a.length*b.length>4e6)return msg($('#dmsg'),'Inputs are too large');
+const n=a.length,m=b.length,t=Array.from({length:n+1},()=>new Uint16Array(m+1));
+for(let i=n-1;i>=0;i--)for(let j=m-1;j>=0;j--)t[i][j]=a[i]===b[j]?t[i+1][j+1]+1:Math.max(t[i+1][j],t[i][j+1]);
+let i=0,j=0,o='',ad=0,rm=0;const L=(c,p,x)=>`<span class="${c}">${p} ${H(x)||' '}</span>`;
+while(i<n||j<m){if(i<n&&j<m&&a[i]===b[j]){o+=L('','&nbsp;',a[i]);i++;j++}else if(j<m&&(i===n||t[i][j+1]>=t[i+1][j])){o+=L('ad','+',b[j]);j++;ad++}else{o+=L('rm','-',a[i]);i++;rm++}}
+$('#do').innerHTML=o;msg($('#dmsg'),ad+rm?`+${ad} added | −${rm} removed`:'Identical ✅',ad+rm===0)}
+$('#da').oninput=$('#db').oninput=D;
+
+/* Text tools */
+const X=$('#xi');
+function XS(){const v=X.value;$('#xs').textContent=`${v?v.split('\n').length:0} lines | ${(v.trim().match(/\S+/g)||[]).length} words | ${[...v].length} chars | ${new TextEncoder().encode(v).length} bytes`;$('#xs').className='msg'}
+const XF={sort:l=>[...l].sort((a,b)=>a.localeCompare(b)),rev:l=>[...l].reverse(),dedupe:l=>[...new Set(l)],trim:l=>l.map(x=>x.trim()).filter(Boolean),num:l=>l.map((x,i)=>`${i+1}. ${x}`),up:l=>l.map(x=>x.toUpperCase()),low:l=>l.map(x=>x.toLowerCase())};
+$$('[data-x]').forEach(b=>b.onclick=()=>{X.value=XF[b.dataset.x](X.value.split('\n')).join('\n');XS()});
+X.oninput=XS;$('#xc').onclick=()=>copy(X.value);XS();
+
+/* HTTP */
+const HT=[[200,'OK','Request succeeded'],[201,'Created','New resource created'],[204,'No Content','Success, empty body'],[301,'Moved Permanently','Permanent redirect'],[302,'Found','Temporary redirect'],[304,'Not Modified','Use the cached copy'],[307,'Temporary Redirect','Redirect, keep the method'],[308,'Permanent Redirect','Permanent, keep the method'],[400,'Bad Request','Malformed request or invalid data'],[401,'Unauthorized','Not authenticated: login or token needed'],[403,'Forbidden','Authenticated but not allowed'],[404,'Not Found','Resource does not exist'],[405,'Method Not Allowed','HTTP method not supported here'],[408,'Request Timeout','Client took too long'],[409,'Conflict','Conflicts with current state'],[410,'Gone','Permanently removed'],[413,'Payload Too Large','Body exceeds the limit'],[415,'Unsupported Media Type','Content type not supported'],[418,"I'm a teapot",'Official joke code 🫖'],[422,'Unprocessable Content','Valid syntax, invalid data'],[429,'Too Many Requests','Rate limit exceeded'],[500,'Internal Server Error','Server crashed or hit a bug'],[501,'Not Implemented','Server lacks this feature'],[502,'Bad Gateway','Bad reply from upstream server'],[503,'Service Unavailable','Overloaded or down for maintenance'],[504,'Gateway Timeout','Upstream server too slow']];
+function HF(){const q=$('#hq').value.toLowerCase();list($('#hto'),HT.filter(r=>r.join(' ').toLowerCase().includes(q)).map(r=>[r[0],r[1]+' - '+r[2]]))}
+$('#hq').oninput=HF;HF();
+
+/* Git */
+const GT=[['Init a repo','git init'],['Clone a repo','git clone <url>'],['Short status','git status -sb'],['Stage everything','git add -A'],['Commit','git commit -m "msg"'],['Amend last commit','git commit --amend'],['Undo last commit, keep changes','git reset --soft HEAD~1'],['Discard changes in a file','git restore <file>'],['Unstage a file','git restore --staged <file>'],['New branch and switch','git switch -c <branch>'],['Switch branch','git switch <branch>'],['Stash changes','git stash push -u'],['Restore stash','git stash pop'],['Compact graph log','git log --oneline --graph --all'],['Show diff','git diff'],['Merge a branch','git merge <branch>'],['Rebase onto branch','git rebase <branch>'],['Take one commit','git cherry-pick <hash>'],['Safely undo a commit','git revert <hash>'],['Wipe local changes (danger)','git reset --hard HEAD'],['Add remote','git remote add origin <url>'],['Push new branch','git push -u origin <branch>'],['Pull with rebase','git pull --rebase'],['Delete local branch','git branch -d <branch>'],['Delete remote branch','git push origin --delete <branch>'],['Create tag','git tag -a v1.0 -m "msg"'],['Who changed this line?','git blame <file>'],['Recover lost commits','git reflog'],['Stop tracking a file','git rm --cached <file>'],['Delete untracked files','git clean -fd']];
+function GF(){const q=$('#gq').value.toLowerCase();list($('#gto'),GT.filter(r=>r.join(' ').toLowerCase().includes(q)))}
+$('#gq').oninput=GF;GF();
+
+/* chmod */
+$('#cmt').innerHTML=['Owner','Group','Others'].map((n,i)=>`<div class="row" style="margin:4px 0"><b style="width:80px">${n}</b>${['r','w','x'].map((p,j)=>`<label><input type="checkbox" class="cm" data-v="${4>>j}" data-g="${i}"> ${p}</label>`).join('')}</div>`).join('');
+function CM(){const o=[0,0,0],s=['','',''];$$('.cm').forEach(c=>{const g=+c.dataset.g,v=+c.dataset.v;if(c.checked)o[g]+=v;s[g]+=c.checked?'rwx'['421'.indexOf(v)]:'-'});const oc=o.join('');list($('#cmo'),[['Octal',oc],['Symbolic','-'+s.join('')],['Command','chmod '+oc+' file']])}
+function CS(v){$$('.cm').forEach(c=>c.checked=(+v[c.dataset.g]&+c.dataset.v)>0);CM()}
+$$('.cm').forEach(c=>c.onchange=CM);$('#cmi').oninput=()=>{const v=$('#cmi').value;if(/^[0-7]{3}$/.test(v))CS(v)};CS('644');
+
+let t0='json';try{t0=localStorage.getItem('dk-tab')||'json'}catch(e){}show(T.some(x=>x[0]===t0)?t0:'json');
+try{if('serviceWorker'in navigator&&location.protocol.startsWith('http'))navigator.serviceWorker.register('sw.js')}catch(e){}
+</script>
+</body>
+</html>
